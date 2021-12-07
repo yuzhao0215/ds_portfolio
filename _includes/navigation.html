@@ -1,4 +1,9 @@
 <nav>
-    <a href="{{site.baseurl}}/">Home</a>
-    <a href="{{site.baseurl}}/about.html">About</a>
+    <a href="{{site.baseurl}}/" {% if page.url == '/' %} style="color:red;" {% endif %}>
+        Home
+    </a>
+
+    <a href="{{site.baseurl}}/about.html" {% if page.url == '/about.html' %} style="color:red;" {% endif %}>
+        About
+    </a>
   </nav>
