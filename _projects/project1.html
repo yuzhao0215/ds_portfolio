@@ -1,0 +1,84 @@
+---
+short_name: Project_1
+name: Classification of two-camera corresponded bubble images
+date: 2021-12-01
+excerpt_separator: <!--more-->
+---
+
+Tracer particles like small bubbles are typically used to visualize airflow in Fluid Mechanics. 
+To track the trajectories of bubbles, multiple cameras are needed to reconstruct the 3D coordinates of bubbles.
+Before 3D reconstruction of bubbles' coordinates, it is important to correctly identify the images of each bubble across multiple cameras.  
+This is a difficult task because small bubbles all look similar in cameras. To help identify corresponded bubble images in cameras 
+(belong to each other (belong to a real bubble), several machine learning classifiers were used to predict the "True" or "False" of a bubble images pair. 
+The results show that the neural network classifier (nn_clf) performed the best and achieved approximately 95% prediction accuracy. 
+
+ <!--more-->
+
+
+ <h2>Introduction</h2>
+ <p>
+     My PhD research is about visualizing airflow movement and measuring airflow velocities. To visualize airflow, tracer particles like bubbles are added into the air as shown in Fig. 1 (a). If the positions of bubbles are known in a sequence of time, we can derive the velocities of bubbles, which are similar to the local airflow velocities. To get the positions (3D coordinates) of bubbles, the 3D reconstruction using multi-camera and triangulation is used as shown in Fig. 2 (b). The measured velocity field can be found in Fig. 1 (c). 
+ </p>
+ 
+ <p align="center">
+     <img src="{{site.baseurl}}/assets/images/project_1/Fig-1.gif" alt="bubbles" height=500 width=250> <img src="{{site.baseurl}}/assets/images/project_1/Fig-1b.png" alt="diagram" height=500 width=500>
+     <br>
+     Fig. 1 (a) Bubbles in the airflow out of a nozzle. (b) Multiple cameras capturing bubbles' images. (c) Measured velocity field.
+ </p>
+ 
+ <p>
+     Although only two cameras are enough to reconstruct 3D coordinates, ambiguities exist when corresponding 2D particle images among different cameras. As shown in Fig. 2, it is hard to distinguish which particle in the right camera corresponds to the left particle when there is occlusion. One way to reduce occlusion is to add extra cameras so that one particle being occluded in a camera might be visible in another camera. As shown in Fig. 2 (b), for a particle in camera A, extra cameras reduce the number of candidates a lot. However, extra cameras generate larger data and cost more computing resources.
+ </p>
+ 
+ <p align="center">
+     <img src="{{site.baseurl}}/assets/images/project_1/Fig-2.jpg" alt="correspondence" height=350 width=400> <img src="{{site.baseurl}}/assets/images/project_1/Fig-2b.gif" alt="fourCameras" height=350 width=400>
+     <br>
+     Fig. 2 (a) Correspondence of particles between two cameras.
+ </p>
+ 
+ <p>
+     Therefore, we wonder that if we can use data analysis approach to enhance the two-camera correspondence? In other words, it would be promising if we can extract the features of particle images in two cameras then train a model to predict if two particle images are corresponded. The usage of this model is shown in Fig. 3. Instead of four cameras, when we have a candidate pair from camera 1 and camera 2, we can extract the features then pass the features to the prediction model. If these two particles are projected from a single 3D particle (two 2D particles are corresponded), the prediction label would be TRUE. Nevertheless, if the prediction result is FALSE, then this pair of particles are not corresponded because they are 2D projections from different 3D particles.   
+ </p>
+ 
+ <p align="center">
+     <img src="{{site.baseurl}}/assets/images/project_1/Fig-3.gif" alt="model" height=350 width=400>
+     <br>
+     Fig. 3 The model used to predict if two 2D particles are corresponded.
+ </p>
+ 
+ <h2>Methods</h2>
+ <p>
+     Now we know how to use this model, however, we need some ground truth data to train this model first. It is a little bit tricky to get the "GOLDEN" training data because we do not know the real 3D positions of bubbles in the measurement volume. What we can do is to use some reasonable accurate results from other methods such as using four cameras to reconstruct the position of bubbles. This is an acceptable method because when there are few particles in the measurement volume, the four-camera correspondence can be considered accurate. The construction of training data is shown in Fig. 4, which shows how we extract the "True" and "False" data to train the model.
+ </p>
+ 
+ <p align="center">
+     <img src="{{site.baseurl}}/assets/images/project_1/Fig-4.gif" alt="model" height=360 width=480>
+     <br>       
+     Fig. 4 Supervised training of model using True and False data.
+ </p>
+ 
+ <p>
+     After extraction, an array containing 64 features (columns) was extracted. However, there were some linear dependencies between different features. To reduce the feature dimension, principal components analysis (PCA) was performed on the array with ten principal components. It can be seen in Fig.5 that the true and false samples were seperated after PCA. The explained variance was approximately 70%.   
+ </p>
+ 
+ <p align="center">
+     <img src="{{site.baseurl}}/assets/images/project_1/Fig-5.png" alt="model" height=360 width=480>
+     <br>
+     Fig. 5 The biplot of True and False data points after PCA transformation.
+ </p>
+  
+ <h2>Results</h2>
+ <p>
+     After PCA transformation, the total data array was seperated to training data and test data with a weight ratio 4:1. The training data was used to train four different kinds of classifiers: 1. logistic regression (LR), 2. Decision tree (DT), 3. neural network (NN) - Multi Layer Perceptron, 4. Support Vector Machine (SVM). Since the classifier is going to be used in real-time measurement, we would like to select the classifier that has the fastest prediction time but also with reasonable accuracy. All models were initiated with the default settings. The accuracies and predictions time are shown in Fig. 6. It can be seen that the neural network classifier achieved the best accuracy (~97%). However, the logistic regression classifier was the fastest one (less than 0.01s per 150000 samples). Therefore, when high accuracy is needed, the neural network classifier should be selected. When the processing time is the primary consideration, the logistic regression classifier can be used.
+ </p>
+ 
+ <p align="center">
+     <img src="{{site.baseurl}}/assets/images/project_1/Fig-6.png" alt="model" height=360 width=480>
+     <br>
+     Fig. 6 The accuracies and prediction time of different classifiers.
+ </p>
+ 
+ <h2>Conclusion</h2>
+ <p>
+     Based on the results, we found that it is possible to use machine learning method to enhance the two-camera correspondence in VPTV, which is used achieved by traditional computer vision method such as triangulation. This is meaningful because the machine learning and data mining approaches can handle complex situations. For example, in this project, there were many features extracted, and it was difficult to utilize every feature seperately. However, with machine learning, those features can be fully utilized and great accuracy can be achieved.
+ </p>

@@ -1,6 +1,8 @@
 collections:
   authors:
     output: true
+  projects:
+    output: true
 
 defaults:
   - scope:
@@ -17,3 +19,8 @@ defaults:
       path: ""
     values:
       layout: "default"
+  - scope:
+      path: ""
+      type: "projects"
+    values:
+      layout: "project"
