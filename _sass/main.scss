@@ -1,3 +1,88 @@
-.current{
-    color: green;
+body {
+    background-color: lightblue;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 200px;
+    margin-left: 200px;
+    font-family: Poppins, sans-serif;
+  }
+
+h1 {
+    font-family: 'Abril Fatface', serif;
+    font-size: 46px;  
+    text-align: center;
 }
+
+h1.center{
+    text-align: center;
+    padding: 200px 0;
+    font-size: 75px;
+
+}
+
+h2 {
+    font-family: 'Abril Fatface', serif;
+    font-size: 30px;  
+}
+
+p{
+    // font-family: verdana;
+    font-size: 20px;
+    line-height: 1.8;
+    
+}
+
+ol, ul {
+    // font-family: verdana;
+    font-size: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 75;
+    margin-left: 75;
+    line-height: 1.8;
+
+}
+
+figure{
+    background: rgba(251, 251, 251, 0.5);
+    // background-color: #ffffff;
+    text-align: center;
+    border: 1px #000000 solid;
+    padding: 4px;
+    margin-right: 75;
+    margin-left: 75;
+}
+
+figcaption{
+    font-style: italic;
+    font-size: 18px;
+}
+
+ul.nav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: rgb(190, 190, 190);
+}
+  
+li.nav {
+    float: left;
+}
+
+li.nav a.nav{
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li.nav a.nav:hover {
+    background-color: rgb(97, 97, 97);
+}
+
+// a.current{
+//     background-color: rgb(173, 70, 70);
+//     color: green;
+// }

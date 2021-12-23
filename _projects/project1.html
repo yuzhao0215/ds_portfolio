@@ -1,16 +1,17 @@
 ---
 short_name: Project_1
-name: Classification of two-camera corresponded bubble images
+name: Classification of Two-camera Corresponded Bubble Images
 date: 2021-12-01
 excerpt_separator: <!--more-->
 ---
-
+<p>
 Tracer particles like small bubbles are typically used to visualize airflow in Fluid Mechanics. 
 To track the trajectories of bubbles, multiple cameras are needed to reconstruct the 3D coordinates of bubbles.
 Before 3D reconstruction of bubbles' coordinates, it is important to correctly identify the images of each bubble across multiple cameras.  
 This is a difficult task because small bubbles all look similar in cameras. To help identify corresponded bubble images in cameras 
 (belong to each other (belong to a real bubble), several machine learning classifiers were used to predict the "True" or "False" of a bubble images pair. 
 The results show that the neural network classifier (nn_clf) performed the best and achieved approximately 95% prediction accuracy. 
+</p>
 
  <!--more-->
 
@@ -31,11 +32,12 @@ The results show that the neural network classifier (nn_clf) performed the best 
      which corresponds well with our common sense.   
  </p>
  
- <p align="center">
-     <img src="{{site.baseurl}}/assets/images/project_1/Fig-1.gif" alt="bubbles" height=500 width=250> <img src="{{site.baseurl}}/assets/images/project_1/Fig-1b.png" alt="diagram" height=500 width=500>
-     <br>
-     Fig. 1 (a) Bubbles in the airflow out of a nozzle. (b) Multiple cameras capturing bubbles' images. (c) Measured velocity field.
- </p>
+ <figure>
+     <img src="{{site.baseurl}}/assets/images/project_1/Fig-1.gif" alt="bubbles" height=500 width=250> 
+     <img src="{{site.baseurl}}/assets/images/project_1/Fig-1b.png" alt="diagram" height=500 width=500>
+     <figcaption>Fig. 1 (a) Bubbles in the airflow out of a nozzle. (b) Multiple cameras capturing bubbles' images. (c) Measured velocity field.
+    </figcaption>  
+</figure>
  
  <p>
      Measuring accurate 3D coordinates of bubbles at each time step is the most important task,
@@ -58,11 +60,13 @@ The results show that the neural network classifier (nn_clf) performed the best 
      Although this is a common approach when dealing with bubbles, extra cameras generate large data and cost more computing resources.
  </p>
  
- <p align="center">
-     <img src="{{site.baseurl}}/assets/images/project_1/Fig-2.jpg" alt="correspondence" height=350 width=400> <img src="{{site.baseurl}}/assets/images/project_1/Fig-2b.gif" alt="fourCameras" height=350 width=400>
-     <br>
-     Fig. 2 (a) Correspondence of particles between two cameras. (b) Correspondence between multiple cameras.
- </p>
+ <figure>
+     <img src="{{site.baseurl}}/assets/images/project_1/Fig-2.jpg" alt="correspondence" height=350 width=400> 
+     <img src="{{site.baseurl}}/assets/images/project_1/Fig-2b.gif" alt="fourCameras" height=350 width=400>
+    <figcaption>
+        Fig. 2 (a) Correspondence of particles between two cameras. (b) Correspondence between multiple cameras.
+    </figcaption>
+ </figure>
  
  <p>
      Therefore, we wonder that if there exists another way to determine the correspondence of bubbles using only two cameras.
@@ -78,11 +82,12 @@ The results show that the neural network classifier (nn_clf) performed the best 
      2D projections from different 3D particles.   
  </p>
  
- <p align="center">
-     <img src="{{site.baseurl}}/assets/images/project_1/Fig-3.gif" alt="model" height=350 width=400>
-     <br>
-     Fig. 3 The model used to predict if two 2D particles are corresponded.
- </p>
+ <figure>
+     <img src="{{site.baseurl}}/assets/images/project_1/Fig-3.gif" alt="model" height=400 width=500>
+    <figcaption>
+        Fig. 3 The model used to predict if two 2D particles are corresponded.
+    </figcaption>
+ </figure>
  
  <h2>Methods</h2>
  <p>
@@ -124,11 +129,12 @@ The results show that the neural network classifier (nn_clf) performed the best 
      
  </p>
  
- <p align="center">
-     <img src="{{site.baseurl}}/assets/images/project_1/Fig-4.gif" alt="model" height=360 width=480>
-     <br>       
-     Fig. 4 Supervised training of model using True and False data.
- </p>
+ <figure>
+     <img src="{{site.baseurl}}/assets/images/project_1/Fig-4.gif" alt="model" height=400 width=500>
+     <figcaption>
+        Fig. 4 Supervised training of model using True and False data.
+     </figcaption>       
+ </figure>
  
  <p>
      After extraction, an array containing 64 features (columns) was extracted. 
@@ -138,11 +144,13 @@ The results show that the neural network classifier (nn_clf) performed the best 
      The explained variance was approximately 70%.   
  </p>
  
- <p align="center">
-     <img src="{{site.baseurl}}/assets/images/project_1/Fig-5.png" alt="model" height=360 width=480>
-     <br>
-     Fig. 5 The biplot of True and False data points after PCA transformation.
- </p>
+ <figure>
+     <img src="{{site.baseurl}}/assets/images/project_1/Fig-5.png" alt="model" height=400 width=500>
+    <figcaption>
+        Fig. 5 The biplot of True and False data points after PCA transformation.
+    </figcaption>
+     
+ </figure>
   
  <h2>Results</h2>
  <p>
@@ -156,11 +164,12 @@ The results show that the neural network classifier (nn_clf) performed the best 
     When the processing time is the primary consideration, the logistic regression classifier can be used.
  </p>
  
- <p align="center">
-     <img src="{{site.baseurl}}/assets/images/project_1/Fig-6.png" alt="model" height=360 width=480>
-     <br>
-     Fig. 6 The accuracies and prediction time of different classifiers.
- </p>
+ <figure>
+     <img src="{{site.baseurl}}/assets/images/project_1/Fig-6.png" alt="model" height=400 width=500>
+    <figcaption>
+        Fig. 6 The accuracies and prediction time of different classifiers.
+    </figcaption>
+ </figure>
  
  <h2>Conclusion</h2>
  <p>
@@ -169,4 +178,11 @@ The results show that the neural network classifier (nn_clf) performed the best 
      which was typically achieved by traditional computer vision method such as triangulation. 
      This is a meaningful project because by reducing the required number of cameras using machine learning,
      the measurement volume can be greatly increased with the same number of cameras. 
+ </p>
+
+ <p>
+    View code here: 
+    <a href="https://github.com/yuzhao0215/Classification_2cam_correspondence.git">
+        https://github.com/yuzhao0215/Classification_2cam_correspondence.git
+    </a>
  </p>

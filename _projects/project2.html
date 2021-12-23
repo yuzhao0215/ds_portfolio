@@ -5,13 +5,19 @@ date: 2021-12-02
 excerpt_separator: <!--more-->
 ---
 
-Tracer particles like small bubbles are typically used to visualize airflow in Fluid Mechanics. 
-To track the trajectories of bubbles, multiple cameras are needed to reconstruct the 3D coordinates of bubbles.
-Before 3D reconstruction of bubbles' coordinates, it is important to correctly identify the images of each bubble across multiple cameras.  
-This is a difficult task because small bubbles all look similar in cameras. To help identify corresponded bubble images in cameras 
-(belong to each other (belong to a real bubble), several machine learning classifiers were used to predict the "True" or "False" of a bubble images pair. 
-The results show that the neural network classifier (nn_clf) performed the best and achieved approximately 95% prediction accuracy. 
+<p>
+    This is a followup project of Project 1. For data science project, it is important to visualize the data to
+    better understand the problem. In this project, an interactive visualization website was built using Dash and Plotly. 
+    You can select arbitry camera pair including a left camera and a right camera among eight cameras. 
+    Then, by selecting a bubble image in left camera, the candidate bubble images in right camera will be 
+    highlighted. Plus, the prediction results of the candidate particles are presented with classifiers 
+    trained in Project 1. 
+</p>
 
  <!--more-->
 
-This is a project visualizing bubble images.
+<p>
+    This is a project link hosted on Heroku:
+    <a href="https://vptv-two-camera-correspondence.herokuapp.com/">https://vptv-two-camera-correspondence.herokuapp.com/.</a>
+    Note that the first time you opened this link might take 30 seconds.
+</p>
