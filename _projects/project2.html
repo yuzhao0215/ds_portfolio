@@ -21,3 +21,29 @@ excerpt_separator: <!--more-->
     <a href="https://vptv-two-camera-correspondence.herokuapp.com/">https://vptv-two-camera-correspondence.herokuapp.com/.</a>
     Note that the first time you opened this link might take 30 seconds.
 </p>
+
+<p>
+    The interface is shown below:
+</p>
+
+<figure>
+    <img src="{{site.baseurl}}/assets/images/project_2/Fig-1.png" alt="model" height=450 width=800>
+</figure>
+
+<ul>
+    <li>Dropdown 1: selects the index of left camera.</li>
+    <li>Dropdown 2: selects the index of right camera.</li>
+    <li>Dropdown 3: selects the index of particle in left camera.</li>
+    <li>Slider 1: scale down the image resolution in case they cannot fit in page.</li>
+    <li>Left image: image of left camera.</li>
+    <li>Right image: image of right camera.</li>
+    <li>Purple circles: detected particles, where orange dot indicates currently selected particle.</li>
+    <li>Gold circles: particle candidates in right camera.</li>
+    <li>Orange annotation:</li>
+    <ul>
+        <li>log_label: the predicted label of logistic regression classifier.</li>
+        <li>tree_label: the predicted label of decision tree classifier.</li>
+        <li>nn_label: the predicted label of neural network classifier.</li>
+
+    </ul>
+</ul>
