@@ -5,12 +5,12 @@ date: 2021-12-01
 excerpt_separator: <!--more-->
 ---
 <p>
-Tracer particles like small bubbles are typically used to visualize airflow in Fluid Mechanics. 
-To track the trajectories of bubbles, multiple cameras are needed to reconstruct the 3D coordinates of bubbles.
-Before 3D reconstruction of bubbles' coordinates, it is important to correctly identify the images of each bubble across multiple cameras.  
-This is a difficult task because small bubbles all look similar in cameras. To help identify corresponded bubble images in cameras 
-(belong to each other (belong to a real bubble), several machine learning classifiers were used to predict the "True" or "False" of a bubble images pair. 
-The results show that the neural network classifier (nn_clf) performed the best and achieved approximately 95% prediction accuracy. 
+    Tracer particles like small bubbles are typically used to visualize airflow in Fluid Mechanics. 
+    Multiple cameras are needed to reconstruct the 3D coordinates of bubbles to track the bubbles’ trajectories.
+    Before the 3D reconstruction of bubbles' coordinates, it is important to identify each bubble’s image across multiple cameras correctly.  
+    This is a difficult task because small bubbles all look similar in cameras. To help identify corresponded bubble images in cameras. 
+    (belong to each other (belong to a real bubble), several machine learning classifiers were used to predict the "True" or "False" of a bubble image pair. 
+    The results show that the neural network classifier (nn_clf) performed the best and achieved approximately 95% prediction accuracy. 
 </p>
 
  <!--more-->
@@ -18,18 +18,18 @@ The results show that the neural network classifier (nn_clf) performed the best 
 
  <h2>Introduction</h2>
  <p>
-     It may sounds weired that why somebody wants to study bubbles? 
-     Actually, my entire PhD research was about using bubbles to visualize airflow movement.
-     The bubbles we use are no different than what children play with except the bubbles are reall small (~1 mm),
-     and they are filled with Helium to have the same density with air. 
-     To visualize airflow, tracer particles like bubbles are added into the air as shown in Fig. 1 (a). 
-     If the positions of bubbles are known in a sequence of time, 
-     we can derive the velocities of bubbles, which are similar to the local airflow velocities. 
-     To get the positions (3D coordinates) of bubbles, 
-     the 3D reconstruction using multi-camera and triangulation is used as shown in Fig. 2 (b). 
-     An example of measured velocity field can be found in Fig. 1 (c). 
-     This figure shows that the mean velocity close to the nozzle is faster than the far field, 
-     which corresponds well with our common sense.   
+    It may sound weird why somebody wants to study bubbles? 
+    However, my entire Ph.D. research was about using bubbles to visualize airflow movement.
+    The bubbles we use are no different than what children play with, except the bubbles are small (~1 mm)
+    and filled with Helium to have the same density as air. 
+    Tracer particles like bubbles are added into the air to visualize airflow, as shown in Fig. 1 (a). 
+    If the positions of bubbles are known in a sequence of time, 
+    we can derive the velocities of bubbles, which are similar to the local airflow velocities. 
+    To get the positions (3D coordinates) of bubbles, 
+    the 3D reconstruction using multi-camera and triangulation is used, as shown in Fig. 2 (b). 
+    An example of a measured velocity field can be found in Fig. 1 (c). 
+    This figure shows that the mean velocity close to the nozzle is faster than the far-field, 
+    which corresponds well with our common sense. 
  </p>
  
  <figure>
@@ -40,24 +40,24 @@ The results show that the neural network classifier (nn_clf) performed the best 
 </figure>
  
  <p>
-     Measuring accurate 3D coordinates of bubbles at each time step is the most important task,
-     however, before the 3D reconstruction, we have to perform correspondence first.
-     The <a href="https://en.wikipedia.org/wiki/Correspondence_problem">"correspondence"</a> here referes to a fundamental problem 
-     in computer vision: when capturing the same object from different point of view, 
-     how to determining which part of image 1 corresponds to which part in image 2.
-     In this case, we would like to know which bubble image in image 2 corresponds to a bubble in image 1. 
-     Typically, only two cameras are enough to reconstruct 3D coordinates (just like we have two eyes so we can sense the depth).
-     However, ambiguities exist when corresponding 2D particle images using only two cameras as shown in Fig. 2 (a).  
-     For particle X<sub>L</sub> in left image, there exists multiple candidates in right image that might correspond to X<sub>L</sub>.
-     One way to determine the correct candidate is to extract the local features of each candidate using different methods such as 
-     <a href="https://en.wikipedia.org/wiki/Scale-invariant_feature_transform">SIFT</a> then compare to the features of X<sub>L</sub>.
-     This is a common method in <a href="https://en.wikipedia.org/wiki/Panorama">panorama creation</a> or 
-     <a href="https://en.wikipedia.org/wiki/Image_stitching">image stitching</a>.
-     However, this method might not fit our task very well because all bubble images look very similar in each image.
-     And because bubbles are transparent, their features vary a lot from different point of views. 
-     One way to reduce ambiguities of bubbles is to add extra cameras so that one particle being occluded in a camera might be visible
-     in another camera. As shown in Fig. 2 (b), for a particle in camera 1, extra cameras reduce the number of candidates by a lot. 
-     Although this is a common approach when dealing with bubbles, extra cameras generate large data and cost more computing resources.
+    Measuring accurate 3D coordinates of bubbles at each time step is the most important task,
+    however, before the 3D reconstruction, we have to perform correspondence first.
+    The <a href="https://en.wikipedia.org/wiki/Correspondence_problem">"correspondence"</a> here refers to a fundamental problem 
+    in computer vision: when capturing the same object from different point of view, 
+    how to determining which part of image 1 corresponds to which part in image 2.
+    In this case, we would like to know which bubble image in image 2 corresponds to a bubble in image 1. 
+    Typically, only two cameras are enough to reconstruct 3D coordinates (just like we have two eyes, so we can sense the depth).
+    However, ambiguities exist when corresponding 2D particle images using only two cameras, as shown in Fig. 2 (a).  
+    For particle X<sub>L</sub> in left image, there exists multiple candidates in right image that might correspond to X<sub>L</sub>.
+    One way to determine the correct candidate is to extract the local features of each candidate using different methods such as 
+    <a href="https://en.wikipedia.org/wiki/Scale-invariant_feature_transform">SIFT</a> then compare to the features of X<sub>L</sub>.
+    This is a common method in <a href="https://en.wikipedia.org/wiki/Panorama">panorama creation</a> or 
+    <a href="https://en.wikipedia.org/wiki/Image_stitching">image stitching</a>.
+    However, this method might not fit our task very well because all bubble images look very similar in each image.
+    And because bubbles are transparent, their features vary greatly from different points of view. 
+    One way to reduce ambiguities of bubbles is to add extra cameras so that one particle occluded in a camera might be visible
+    in another. As shown in Fig. 2 (b), for a particle in camera 1, extra cameras reduce the number of candidates by a lot. 
+    Although this is a common approach when dealing with bubbles, extra cameras generate large data and cost more computing resources.
  </p>
  
  <figure>
@@ -69,17 +69,17 @@ The results show that the neural network classifier (nn_clf) performed the best 
  </figure>
  
  <p>
-     Therefore, we wonder that if there exists another way to determine the correspondence of bubbles using only two cameras.
-     Machine learning has been more and more popular these days because it can utilize Big Data to solve real problems. 
-     A model can be trained with data to perform classification or regression tasks. 
-     In this case, we would like to find a classification model that can predict if a pair of bubbles from two images is a true correspodence.
-     The usage of this model is shown in Fig. 3. 
-     Instead of using four cameras, when we have a candidate pair from camera 1 and camera 2, 
-     we can extract the features then pass the features to the prediction model. 
-     If these two particles are projected from a single 3D particle (two 2D particles are corresponded), 
-     the prediction label would be TRUE. 
-     In contrast, if the prediction result is FALSE, then this pair of particles are not corresponded because they are 
-     2D projections from different 3D particles.   
+    Therefore, we wonder if there exists another way to determine the correspondence of bubbles using only two cameras.
+    Machine learning has become increasingly popular because it can utilize Big Data to solve real problems. 
+    A model can be trained with data to perform classification or regression tasks. 
+    In this case, we would like to find a classification model that can predict if a pair of bubbles from two images is a true correspondence.
+    The usage of this model is shown in Fig. 3. 
+    Instead of using four cameras, when we have a candidate pair from camera one and camera two, 
+    we can extract the features and then pass the features to the prediction model. 
+    If these two particles are projected from a single 3D particle (two 2D particles correspond), 
+    the prediction label would be TRUE. 
+    In contrast, if the prediction result is FALSE, then this pair of particles do not correspond because they are 
+    2D projections from different 3D particles.   
  </p>
  
  <figure>
@@ -91,17 +91,17 @@ The results show that the neural network classifier (nn_clf) performed the best 
  
  <h2>Methods</h2>
  <p>
-     Now we know how to use this model, however, we need some ground truth data to train this model first. 
-     It is a little bit tricky to get the ground truth training data because we do not know the real 3D positions of bubbles 
-     in the measurement volume. 
-     What we can do is to use some reasonable accurate results from other methods such as using four cameras to reconstruct 
-     the position of bubbles. 
-     This is an acceptable method because when there are few particles in the measurement volume, 
-     the four-camera correspondence can be considered accurate because typically there is only 1-3 particle candidates when there 
-     are less than 100 particles in a 1280*1024 image. 
-     The construction of training data is shown in Fig. 4, 
-     which shows how we extract the "True" and "False" data to train the model. 
-     The basic procedure is as follows:
+    Now, we know how to use this model. However, we need some ground truth data to train this model first. 
+    It is a little bit tricky to get the ground truth training data because we do not know the real 3D positions of bubbles 
+    in the measurement volume. 
+    What we can do is use some reasonably accurate results from other methods, such as using four cameras to reconstruct 
+    the position of bubbles. 
+    This is an acceptable method because when there are few particles in the measurement volume, 
+    the four-camera correspondence can be considered accurate because typically, there are only 1-3 particle candidates when there 
+    are less than 100 particles in a 1280*1024 image. 
+    The construction of training data is shown in Fig. 4, 
+    which shows how we extract the "True" and "False" data to train the model. 
+    The basic procedure is as follows:
      <ol>
         <li>For particle a in camera 1, we can find the true correspondence particle b in camera 2, which is determined by method described in Fig. 2 (b). 
             This can be expressed as TC&lt;P<sub>a</sub>, P<sub>b</sub>&gt;, where P<sub>i</sub> refers to the i'th particle in each image.
@@ -137,11 +137,11 @@ The results show that the neural network classifier (nn_clf) performed the best 
  </figure>
  
  <p>
-     After extraction, an array containing 64 features (columns) was extracted. 
-     However, there were some linear dependencies between different features. 
-     To reduce the feature dimension, principal components analysis (PCA) was performed on the array with ten principal components. 
-     It can be seen in Fig.5 that the true and false samples were seperated after PCA. 
-     The explained variance was approximately 70%.   
+    After extraction, an array containing 64 features (columns) was extracted. 
+    However, there were some linear dependencies between different features. 
+    Principal component analysis (PCA) was performed on the array with ten principal components to reduce the feature dimension. 
+    It can be seen in Fig.5 that the true and false samples were separated after PCA. 
+    The explained variance was approximately 70%.  
  </p>
  
  <figure>
@@ -154,13 +154,13 @@ The results show that the neural network classifier (nn_clf) performed the best 
   
  <h2>Results</h2>
  <p>
-    Since the classifier is going to be used in real-time measurement, 
-    we would like to select the classifier that has the fastest prediction time but also with reasonable accuracy. 
+    Since the classifier will be used in real-time measurement, 
+    we would like to select the classifier with the fastest prediction time and reasonable accuracy. 
     All models were initiated with the default settings. 
-    The accuracies and predictions time are shown in Fig. 6. 
+    The accuracies and prediction time are shown in Fig. 6. 
     It can be seen that the neural network classifier achieved the best accuracy (~97%). 
-    However, the logistic regression classifier was the fastest one (less than 0.01s per 150000 samples). 
-    Therefore, when high accuracy is needed, the neural network classifier should be selected. 
+    However, the logistic regression classifier was the fastest (less than 0.01s per 150000 samples). 
+    Therefore, the neural network classifier should be selected when high accuracy is needed. 
     When the processing time is the primary consideration, the logistic regression classifier can be used.
  </p>
  
@@ -173,11 +173,11 @@ The results show that the neural network classifier (nn_clf) performed the best 
  
  <h2>Conclusion</h2>
  <p>
-     Based on the results, we found that it is possible to use machine learning method to enhance the two-camera 
-     correspondence in airflow visualization and measurement using tracer bubbles, 
-     which was typically achieved by traditional computer vision method such as triangulation. 
-     This is a meaningful project because by reducing the required number of cameras using machine learning,
-     the measurement volume can be greatly increased with the same number of cameras. 
+    Based on the results, we found that it is possible to use the machine learning method to enhance the two-camera 
+    correspondence in airflow visualization and measurement using tracer bubbles, 
+    which was typically achieved by traditional computer vision methods such as triangulation. 
+    This is a meaningful project because by reducing the required number of cameras using machine learning,
+    the measurement volume can be greatly increased with the same number of cameras. 
  </p>
 
  <p>
