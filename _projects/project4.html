@@ -1,0 +1,217 @@
+---
+short_name: Project_4
+name: Forecasting of Annual Corn Yield in Champaign County Using LSTM
+date: 2021-12-24
+excerpt_separator: <!--more-->
+---
+
+<p>
+    In this project, a LSTM model was trained to predict corn yield in Champaign County 
+    using data collected from 1950-2020. The training data contained features related to weather, soil, 
+    and corn price.  
+    The prediction accuracy of 93% was acheveid when predicting corn yield from 1998-2010.
+</p>
+
+<!--more-->
+
+<h2>Introduction</h2>
+
+<p>
+    The first time I came to Champaign, I was amazed by how large the corn fields were. 
+    As an Agricultural Engineering Student, I am interested in developing models to predict crop yield.
+    I used to cultivate algae in lab. The prediction model was simple for lab cultivation because all 
+    parameters were controled. However, for corn yield forecasting, machine learning should be used because 
+    there are much more parameters. 
+    Recently, I am learning to use Long-short Term Memory (LSTM) for time series forecasting. 
+    Therefore, I developed this project to predict the annual corn yield in Champaign County using LSTM. 
+</p>
+
+<h2>LSTM</h2>
+
+<p>
+    Long-short Term Memory is a powerful method to predict time series data. 
+    Compared to Recurrent Neural Network, 
+    the “long-term” data can be memorized by cell to increase prediction accuracy. 
+    The ability of long-term memory is achieved by using several gates inside cell 
+    that governs what data to store or discard. 
+    There are three kinds of gates: Input Gate, Forget Gate, and Output Gate.
+</p>
+
+<figure>
+    <img src="{{site.baseurl}}/assets/images/project_3/Fig-1.png" alt="model" height=300 width=550>
+</figure>
+
+<h3>Input Gate</h3>
+<p>
+    The input gate decides what part of Input and previous Hidden State (short-term memory) 
+    should be stored in cell. Only information from previous step will be “filtered” by Input Gate. 
+    The Input Gate is achieved by two layers. 
+    The first layer uses a sigmoid function to determine what information of Input and Hidden State 
+    will be passed through. During training, the weights in sigmoid function will be updated between 0 and 1, 
+    where 0 means no data is passed and 1 means totally passed. The equation is shown below:
+    $$i_1 = \sigma(W_{input_1}\cdot(H_{t-1}, x_{t})+bias_{input_1})$$ 
+    The second layer uses a tanh function to regulate the network by passing concatenation of Input and previous
+    hidden state. The equation is shown below:
+    $$i_2 = tanh(W_{input_2}\cdot(H_{t-1}, x_{t})+bias_{input_2})$$ 
+    After i<sub>1</sub> and i<sub>2</sub> are calculated, the output of Input Gate can be calculated using following equation:
+    $$i_{input} = i_1 * i_2$$
+</p>
+
+<figure>
+    <img src="{{site.baseurl}}/assets/images/project_3/Fig-2.png" alt="model" height=300 width=550>
+</figure>
+
+<h3>Forget Gate</h3>
+
+<p>
+    This gate uses a sigmoid function to determine what information in long-term memory should be kept. 
+    The weights of sigmoid function are between 0 and 1. 
+    After looking at current input and previous hidden state, by multiplying the weights with long-term memory, 
+    the Forget Gate decides what information in long-term memory should be discarded.
+    $$f=\sigma(W_{forget}\cdot(H_{t-1}, x_{t})+bias_{forget})$$ 
+    After multiplying the forget weights with long-term memory, 
+    the results will be point wisely added with the data output from Input Gate. 
+    This creates a new version of long-term memory. 
+    $$C_t=C_{t-1}*f+i_{input}$$  
+</p>
+
+<figure>
+    <img src="{{site.baseurl}}/assets/images/project_3/Fig-3.png" alt="model" height=300 width=550>
+</figure>
+
+<h3>Output Gate</h3>
+
+<p>
+    This gate uses a sigmoid function again by passing current Input and previous Hidden State. 
+    After training, the weights of sigmoid function are also between 0 and 1. 
+    $$O_1=\sigma(W_{output_1}\cdot(H_{t-1},x_t)+bias_{output_1})$$
+    At the same time, the new long-term memory calculated in Forget Gate is passed to a tanh function.
+    $$O_2=\tanh(W_{output_2}\cdot C_{t}+bias_{output_2})$$ 
+    The results will be multiplied with sigmoid weights. 
+    The results after multiplication will be the new Hidden State and Output.
+    $$H_t, O_t = O_1 * O_2$$
+</p>
+
+<figure>
+    <img src="{{site.baseurl}}/assets/images/project_3/Fig-4.png" alt="model" height=300 width=550>
+</figure>
+
+<h2>Data</h2>
+
+<p>
+    There are three different kinds of feature data collected that could be related to corn yield. 
+    The first one is weather data such as rainfall, temperature, and wind speed. 
+    The weather plays a great role in corn yield. 
+    For example, if the rainfall is sufficient in corn’s grown season, the yield might be increased. 
+    However, when the rainfall is too large to be drained, the corn yield will decrease. 
+    Another example is the wind speed, 
+    moderate wind speed is beneficial to evaporate the standing water in field. 
+    Whereas strong wind will damage the corn plant. 
+    The annually average temperature and rainfall data were collected on 
+    <a href="https://mrcc.purdue.edu/CLIMATE">https://mrcc.purdue.edu/CLIMATE </a>
+    between 1950-2020. 
+    The wind data were collected on 
+    <a href="https://www.wunderground.com">https://www.wunderground.com</a>. 
+    The averaging of each year’s data was performed between April to October, 
+    because corn is usually planted in April and harvested in October.
+    <br>
+    <br>
+    The second set of data is about soil. There are several features to describe the soil moister. 
+    For example, the Palmer Drought Severity Index (PDSI) is a long-term standardized index ranging from -10 to 10. 
+    The negative values indicate the soil is dry, whereas the positive means the soil is wet. 
+    The soil moister data were also collected on 
+    <a href="https://mrcc.purdue.edu/CLIMATE ">https://mrcc.purdue.edu/CLIMATE </a>
+    between 1950-2020. 
+    <br>
+    <br>
+    The third set of data is corn price, the corn price is usually related with corn yield. 
+    If this year’s corn price is high, more corn yield could be expected for the next year. 
+    The price data were collected on 
+    <a href="https://quickstats.nass.usda.gov">https://quickstats.nass.usda.gov</a>
+    in Illinois from 1950-2020. 
+    The corn yield data in Champaign County was also collected on 
+    <a href="https://quickstats.nass.usda.gov">https://quickstats.nass.usda.gov</a>.
+
+</p>
+
+<h2>Method</h2>
+
+<p>
+    In this project, a single-layer LSTM was used to predict the next year’s corn yield in Champaign County. 
+    The sequence data contains previous six year’s data. 
+    The batch size was set as one. 
+    The number of hidden units was set as 50. 
+    The learning rate was 1E-4, and the number of epochs was set as 200. 
+    The whole dataset was split to training dataset and testing dataset with a ratio 4:1. 
+    Data from 1950-2005 were used for model training, 
+    and data from 2006 to 2020 were used for model testing.   
+</p>
+
+<h2>Results</h2>
+
+<p>
+    After the training of first LSTM, the prediction results are shown in the following figure. 
+    It shows that the fitting of training data is pretty good. 
+    However, the prediction results do not fit well with testing data. 
+    It indicates that overfitting exists in our model. 
+    The model just memorized the pattern of training data instead of the mechanism that impacts the corn yield. 
+    The final prediction accuracy on the testing dataset was only 76.13%.
+</p>
+
+<figure>
+    <img src="{{site.baseurl}}/assets/images/project_3/Fig-5.png" alt="model" height=300 width=550>
+</figure>
+
+<p>
+    However, when reduced the number of epochs to 50, the accuracy was increased to 85.7%. 
+    The results are shown in the following figure. 
+    Although the model did not fit well with the training data, 
+    the prediction results were better than the previous model. 
+    The results show that the distribution of corn yield after 2010 might not be the same from the previous years.  
+</p>
+
+<figure>
+    <img src="{{site.baseurl}}/assets/images/project_3/Fig-6.png" alt="model" height=300 width=550>
+</figure>
+
+<p>
+    In other words, there might be some features that are not included in our dataset. 
+    To validate our hypothesis, a new dataset was constructed from year 1950-2010. 
+    The model was also modified to a stacked two-layer LSTM with 200 hidden units. 
+    The learning rate was set as 5E-5, and the number of epochs was set as 300. 
+    The results of the new dataset are shown in the following figure. 
+    The prediction accuracy was 93%, which was a great increase compared to previous models. 
+    This show that the data after 2010 need more features other than what we have collected.  
+</p>
+
+<figure>
+    <img src="{{site.baseurl}}/assets/images/project_3/Fig-7.png" alt="model" height=300 width=550>
+</figure>
+
+<h2>Conclusion</h2>
+
+<p>
+    The results show that a simple LSTM can achieve a good prediction on the corn yield before 2010 in Champaign County. 
+    The accuracy was 93% for prediction of corn yield before 2010. 
+    However, to predict most recently corn yield, more features need be collected. 
+</p>
+
+<h2>References</h2>
+<ul>
+    <li>Jiang Z, Liu C, Ganapathysubramanian B, Hayes DJ, Sarkar S. Predicting county-scale maize yields with publicly available data. Sci Rep. 2020 Dec;10(1):14957.</li>
+    <li><a href="https://blog.floydhub.com/long-short-term-memory-from-zero-to-hero-with-pytorch/">
+        https://blog.floydhub.com/long-short-term-memory-from-zero-to-hero-with-pytorch/
+    </a></li>
+    <li>
+        <a href="https://www.crosstab.io/articles/time-series-pytorch-lstm">
+            https://www.crosstab.io/articles/time-series-pytorch-lstm
+        </a>
+    </li>
+</ul>
+
+<p>
+    View code here: 
+    <a href="https://github.com/yuzhao0215/forecast_corn_yield">
+        https://github.com/yuzhao0215/forecast_corn_yield
+    </a>
+ </p>
