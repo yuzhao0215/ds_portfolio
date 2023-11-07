@@ -1,18 +1,18 @@
 ---
 short_name: Project_3
-name: Forecasting of Annual Corn Yield in Champaign County Using LSTM
+name: aMaizeing - A Monthly Corn Yield Prediction Model for Farmers 
 date: 2023-11-03
 excerpt_separator: <!--more-->
 ---
-
-<figure>
-    <img src="{{site.baseurl}}/assets/images/tdi/amaizeing.png" alt="model">
-</figure>
+<center>
+    <img align="center" src="{{site.baseurl}}/assets/images/tdi/amaizeing.png" alt="image" width="800">
+</center>
 
 <p>
-    Hello everyone! Thank you for visiting one of my Data Science Project! 
-    This project aims to predict the annul corn yield using a machine learning model based on the weather such as the average perception and 
-    temperature of each month. This model will help farmers to better organize their work and traders in the futures market make decisions.
+In this project, a supervised machine learning model that predicts the corn yield for more than 100 counties in the Corn Belt area was trained using weather and soil data. 
+More than 30 gigabytes of weather and soil data from years 1980 - 2022 were scrapped from several websites for the model training. Instead of a complex time series prediction, 
+this model builds 12 separate random forests corresponding to 12 months to give monthly update of corn yield for each county. This test mean absolute percentage error can achieve 
+15% when using the full weather and soil data (April to next October) averaged on predictions of all counties.   
 </p>
 
 <!--more-->
@@ -20,68 +20,199 @@ excerpt_separator: <!--more-->
 <h2>Motivations</h2>
 
 <p>
+    Hello everyone! Thank you for visiting one of my Data Science Project! 
+    This project aims to predict the annul corn yield using a machine learning model based on the weather and soil data such as the average perception and 
+    temperature of each month. This model will help farmers to better organize their work and traders in the futures market make decisions.
+
     Why am I interested in building a machine learning model to predict the corn yield? 
-    First, it can be helpful for farmers for their cropping activities. 
+    First, it can be helpful for agriculture and corn cropping activities. 
     Second, it might help the traders in a future market to make decisions. 
-    Therefore, it is important to have a machine learning model for the corn yield prediction.
+    And more importantly, I spent five years in a university that is surrounded by hundred miles of corn fields! 
+    Therefore, I am very familar with corn farmers, livestock and poultry houses that use corn as feed and I want to do something to help them. 
+
 </p>
 
-<figure>
-    <img src="{{site.baseurl}}/assets/images/tdi/tractor.png" alt="model">
-</figure>
+<center>
+    <img src="{{site.baseurl}}/assets/images/tdi/tractor.png" alt="model" width = "800">
+</center>
+
 
 <h2>Data</h2>
 
 <p>
-    We can see that there is a corn belt in the US, which is in the Midwest area. 
-    To facilitate corn growth, many weather stations have been established in this area, 
-    and they routinely post weather data that is critical for corn growth.
+    We can see from the following figure that there is a corn belt in the Midwest area, which produces more than 50% of corn yield in the US.
+    To facilitate corn growth, many weather stations have been established in this area to routinely post weather data on their websites that is critical for corn growth.
 
+    <center>
+        <img src="{{site.baseurl}}/assets/images/tdi/weather.png" alt="model" width = "600">
+    </center>
+</p>
+
+<p>
     Therefore, we  can use web scraper to get the data from the websites that publish weather data.     
 
-    There are three different kinds of feature data collected that could be related to corn yield. 
+    There are three different groups of feature data collected that could be related to corn yield. 
     The first one is weather data such as rainfall, temperature, and wind speed. 
-    The weather plays a great role in corn yield. 
+    They play great roles in corn yield, however, the relationship between these features and corn yield is more than a simple positive or negative correlation. 
+    <br>
+    <br>
+
     For example, if the rainfall is sufficient in corn’s grown season, the yield might be increased. 
-    However, when the rainfall is too large to be drained, the corn yield will decrease. 
+    However, when the rainfall is too heavy to be drained, the corn yield will decrease beacuse there is not enough Oxygen for the root of corn plant. 
     Another example is the wind speed, 
     moderate wind speed is beneficial to evaporate the standing water in field. 
     Whereas strong wind will damage the corn plant. 
-    The annually average temperature and rainfall data were collected on 
+
+    <br>
+    <br>
+
+    Therefore, several daily features such as average, minumum and maximum temperatures and rainfall data were collected on 
     <a href="https://mrcc.purdue.edu/CLIMATE">https://mrcc.purdue.edu/CLIMATE </a>
-    between 1950-2020. 
+    between 1980-2022 for all the counties (if the data is applicaple) in the corn belt area. 
     The wind data were collected on 
     <a href="https://www.wunderground.com">https://www.wunderground.com</a>. 
     The averaging of each year’s data was performed between April to October, 
     because corn is usually planted in April and harvested in October.
+
+
     <br>
     <br>
-    The second set of data is about soil. There are several features to describe the soil moister. 
-    For example, the Palmer Drought Severity Index (PDSI) is a long-term standardized index ranging from -10 to 10. 
-    The negative values indicate the soil is dry, whereas the positive means the soil is wet. 
-    The soil moister data were also collected on 
-    <a href="https://mrcc.purdue.edu/CLIMATE ">https://mrcc.purdue.edu/CLIMATE </a>
-    between 1950-2020. 
-    <br>
-    <br>
-    The third set of data is corn price, the corn price is usually related with corn yield. 
-    If this year’s corn price is high, more corn yield could be expected for the next year. 
-    The price data were collected on 
-    <a href="https://quickstats.nass.usda.gov">https://quickstats.nass.usda.gov</a>
-    in Illinois from 1950-2020. 
-    The corn yield data in Champaign County was also collected on 
-    <a href="https://quickstats.nass.usda.gov">https://quickstats.nass.usda.gov</a>.
+
+    Assuming only perception (pcpn) and average temperature features (avg_t) are used, then for each county and for each month m, the training and testing data will be organized as follows: 
 </p>
-
-<figure>
-    <img src="{{site.baseurl}}/assets/images/tdi/weather.png" alt="model">
-</figure>
-
-<h2>Method</h2>
+    <center>
+        <img src="{{site.baseurl}}/assets/images/tdi/sample of data table.PNG" alt="model" width = "800">
+    </center>
 
 <p>
-    View code here: 
-    <a href="https://github.com/yuzhao0215/forecast_corn_yield">
-        https://github.com/yuzhao0215/forecast_corn_yield
-    </a>
- </p>
+    In the above table, there are n samples and 2 * m + 1 columns of features (the "Year" column is also a feature because along with the improvement of gene and fertilizer engineering, 
+    the corn yield will be improved over time). And for each column, it corresponds to the aggregated data of a specific month ranges from 1 to m. 
+    For example, the pcpn_1 corresponds to the average perception of the first month, and avgt_1 corresponds to the average temperature of the first month.
+    Here, the first month actually corresponds to April instead of Janurary because the corn is planted in April.
+</p>
+
+
+<h2>Training</h2>
+
+<p>
+    The training process is relatively straightforward in this project:
+    <ol>
+        <li>
+            For each county and each month, we collect weather and corn yield data described above. 
+        </li>
+
+        <li>
+            Afterward, we first build a linear regression model that takes year as predictor, and corn yield as response.
+        </li>
+
+        <li>
+            AFter the linear regression model is built, we add a column to the above data frame as "residual", 
+            which is the difference between the actual corn yield and the predicted corn yield using the linear regression model.
+        </li>
+
+        <li>
+            We use the "residual" column as the new response and drop the "Corn Yield" column to build a RandomForest model to predict the "residual" of each year. 
+        </li>
+
+        <li>
+            Finally, we add the results of prediction from linear regression and the prediction from RandomForest to get the corn yield of each year.
+        </li>
+
+    </ol>
+</p>
+
+<p>
+    Assume there are c counties, there will be 12 * c models trained because there are 12 months from November to next October. 
+    An animation is shown below to describe this process:
+
+    <center>
+        <img src="{{site.baseurl}}/assets/images/tdi/model.gif" alt="model" width = "600">
+    </center>
+</p>
+
+<h2>Result</h2>
+
+<p>
+    It can be expected that the model corresponding to the Next October will give more accurate prediction because there is more data to utilize.
+    To validate this, 20 counties were used to get the average test mean absolute percentage error (MAPE) of 12 models corresponding to 12 months. 
+    It can be seen that the model that corresponds to October does achieve the lowest MAPE error as expected. 
+    In the MAPE plot, we observe that there are two sharp decrease or MAPE, which happen between Nov. - Jan. and Jun. - Sep. 
+    It is not surprising that the weather data from June to September helps explains variance of corn yield residuals after linear regression, 
+    because the weather within this range is significantly important for corn growth. 
+    However, the weather data way before the growing season (November to Janurary) also 
+    contributes to the model prediction is unexpected. Possible reason according to  
+    <a href="https://farmdocdaily.illinois.edu/2012/04/winter-precipitation-and-corn.html">
+        this article
+    </a> is that: winter precipitation reserves more moisture in the soil moisture reserves, which ultimately increases the corn yield.
+    <center>
+        <img src="{{site.baseurl}}/assets/images/tdi/MAPE.png" alt="model" width = "600">
+    </center>
+
+</p>
+
+
+<h2>An Web App</h2>
+
+<p>
+    A web app based on dash plotly has been deployed to AWS server, so anyone can access this model to get a real time monthly corn yield prediction for a specific county in the corn belt area.
+
+    The layout is as follows:
+    
+
+    First, you can visualize the historical corn yield distribution in the corn belt area. 
+    And by changing the dropdown of years, you can visualize the distribution in this area in differenct year.
+    Also, when you click a county you are interested, the right panel will display the corn yields over years.
+    <center>
+        <img src="{{site.baseurl}}/assets/images/tdi/maphistorydata.png" alt="model" width = "1000">
+    </center>
+</p>
+
+
+<p>
+    Second, you can get a real time corn prediction for each specific county by changing the two dropdowns. 
+    For example, currently, we are checking the Champaign county in Illinois. 
+    The left panel is displaying the weather data (temperature and precipitation) from last November to this October.
+    And the right panel is showing the predictions corresponding to the last 12 months. 
+    Since currently it is November, and therefore we have the entire 12 models. 
+    If the current date is July, then we will only have six models which correspond to last November to this June. 
+    <center>
+        <img src="{{site.baseurl}}/assets/images/tdi/realtimeprediction.png" alt="model" width = "1000">
+    </center>
+</p>
+
+<p>
+    Lastly, you can select any year within 1980 - 2021 to visualize how this model behaves. 
+    For example, we are still looking at Champaign county in Illinois.
+    However, this time we are interested in year 2012 to see how the models are updating the corn yields from November to next October.
+    We can see that in this particular year, Champaign county had been suffering from low precipitation since March to August. 
+    The low precipitation is critical to corn growth and this year's corn yield is expected to be low.
+
+    In the right panel, we can see that our models successfully reacted to the low precipitation and keeps lower the predictions month by month and finally gives a reasonable prediction.
+
+    <center>
+        <img src="{{site.baseurl}}/assets/images/tdi/historyprediction.png" alt="model" width = "1000">
+    </center>
+</p>
+
+
+<h2>Summary</h2>
+<p>
+    In this project, a corn yield prediction model is trained using weather data and a web app is deployed so anyone can access it. More specifically:
+    
+    <ul>
+        <li>More than 30 GB Weather data that is important to corn growth are scrapped using a custom scrapper.</li>
+        <li>For each county, 12 dedicated model combining linear regression and random forest regression are trained to make continuous predictions.</li>
+        <li>The prediction accuracy keeps increasing from month to month, the best MAPE (15%) achieved is by the model corresponding the October, 
+            which utilizes all the weather data in this growing year. </li>
+        <li>A web app is deployed to AWS, so that everyone can have access to this work.</li>
+    </ul>
+
+</p>
+
+
+<h2>Future Work</h2>
+<p>
+    This model achieved reasonable performance by weather data such as precipitation and temperature, however, there are many factors that can influence the 
+    corn yield such as the soil quality, the fertilizer used by farmers, or even the price of corn. Therefore, more data will be scrapped and added to this model 
+    to make more accurate predictions.
+</p>
