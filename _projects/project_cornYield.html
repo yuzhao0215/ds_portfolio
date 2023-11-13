@@ -154,8 +154,10 @@ this model builds 12 separate random forests corresponding to 12 months to give 
 <h2>An Web App</h2>
 
 <p>
-    A web app based on dash plotly has been deployed to AWS server, so anyone can access this model to get a real time monthly corn yield prediction for a specific county in the corn belt area.
-
+    A web app based on dash plotly has been deployed to <a href="https://boiling-shelf-99035-4f1369a4119d.herokuapp.com/">
+        the Heroku platform
+    </a> (It might take about 10 seconds to load the website at the first time), so anyone can access this model to get a real time monthly corn yield prediction for a specific county in the corn belt area.
+    
     The layout is as follows:
     
 
@@ -163,7 +165,7 @@ this model builds 12 separate random forests corresponding to 12 months to give 
     And by changing the dropdown of years, you can visualize the distribution in this area in differenct year.
     Also, when you click a county you are interested, the right panel will display the corn yields over years.
     <center>
-        <img src="{{site.baseurl}}/assets/images/tdi/maphistorydata.png" alt="model" width = "1000">
+        <img src="{{site.baseurl}}/assets/images/tdi/maphistorydata.PNG" alt="model" width = "1000">
     </center>
 </p>
 
@@ -176,7 +178,7 @@ this model builds 12 separate random forests corresponding to 12 months to give 
     Since currently it is November, and therefore we have the entire 12 models. 
     If the current date is July, then we will only have six models which correspond to last November to this June. 
     <center>
-        <img src="{{site.baseurl}}/assets/images/tdi/realtimeprediction.png" alt="model" width = "1000">
+        <img src="{{site.baseurl}}/assets/images/tdi/realtimeprediction.PNG" alt="model" width = "1000">
     </center>
 </p>
 
@@ -190,7 +192,7 @@ this model builds 12 separate random forests corresponding to 12 months to give 
     In the right panel, we can see that our models successfully reacted to the low precipitation and keeps lower the predictions month by month and finally gives a reasonable prediction.
 
     <center>
-        <img src="{{site.baseurl}}/assets/images/tdi/historyprediction.png" alt="model" width = "1000">
+        <img src="{{site.baseurl}}/assets/images/tdi/historyprediction.PNG" alt="model" width = "1000">
     </center>
 </p>
 
